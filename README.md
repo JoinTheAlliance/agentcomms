@@ -13,16 +13,6 @@ pip install agentfs
 ## Quickstart
 
 1. **Start the server**:
-   You can start the server by using the `start_server()` function:
-
-```python
-from agentfs import start_server
-
-start_server()
-```
-
-This will start the server at `http://localhost:8000`.
-
 You can start the server with uvicorn like this:
 ```python
 import os
@@ -31,6 +21,7 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run("agentfs:start_server", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
 ```
+This will start the server at `http://localhost:8000`.
 
 2. **Get a file**:
    Once the server is up and running, you can retrieve file content by sending a GET request to `/file/{path}` endpoint, where `{path}` is the path to the file relative to the server's current storage directory.
