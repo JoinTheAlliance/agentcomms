@@ -24,6 +24,7 @@ def start_server(storage_path=None, port=8000):
     global app
     if storage_path:
         set_storage_path(storage_path)
+    check_files()
     app = FastAPI()
     app.include_router(router)
     app.mount("/", StaticFiles(directory="static"), name="static")
