@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>File Upload</h2>
+
+<form id="upload-form">
+  <input type="file" id="file" name="file">
+  <input type="button" value="Upload" onclick="uploadFile()">
+</form>
+
+<h2>Files</h2>
+
+<ul id="file-list">
+</ul>
+
+<script>
+const serverUrl = 'http://localhost:8000';  // Change to your server address and port
+
+function uploadFile() {
+  const fileInput = document.querySelector('#file');
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.addEventListener('load', (event) => {
+    const fileData = {
+      path: file.name,
+      content: event.target.result,
+    };
+
+    fetch(serverUrl + '/file/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(fileData),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('File uploaded:', data);
+      loadFiles();
+    });
+  });
+
+  reader.readAsText(file);
+}
+
+function loadFiles() {
+  const fileList = document.querySelector('#file-list');
+
+  fetch(serverUrl + '/files/')
+    .then((response) => response.json())
+    .then((data) => {
+      fileList.innerHTML = '';
+      data.files.forEach((file) => {
+        const li = document.createElement('li');
+        li.textContent = file;
+        li.addEventListener('click', () => downloadFile(file));
+        fileList.appendChild(li);
+      });
+    });
+}
+
+function downloadFile(filename) {
+  fetch(serverUrl + '/file/' + filename)
+    .then((response) => response.json())
+    .then((data) => {
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data.content));
+      element.setAttribute('download', filename);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    });
+}
+
+// Load files on page load
+loadFiles();
+</script>
+
+</body>
+</html>
