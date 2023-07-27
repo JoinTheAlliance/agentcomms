@@ -1,6 +1,7 @@
 import os
 
 from fastapi import APIRouter, FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from agentfs.constants import app, storage_path
@@ -25,8 +26,6 @@ def start_server(storage_path=None, port=8000):
         set_storage_path(storage_path)
     app = FastAPI()
     app.include_router(router)
-    from fastapi.staticfiles import StaticFiles
-
     app.mount("/", StaticFiles(directory="static"), name="static")
     if port:
         os.environ["PORT"] = str(port)

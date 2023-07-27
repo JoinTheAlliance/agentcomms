@@ -164,3 +164,4 @@ cython_debug/
 .chroma
 memory
 test
+files/
