@@ -4,6 +4,9 @@ Simple file management and serving for agents
 
 <img src="resources/image.jpg">
 
+[![Lint and Test](https://github.com/AutonomousResearchGroup/agentcomlink/actions/workflows/test.yml/badge.svg)](https://github.com/AutonomousResearchGroup/agentcomlink/actions/workflows/test.yml)
+[![PyPI version](https://badge.fury.io/py/agentcomlink.svg)](https://badge.fury.io/py/agentcomlink)
+
 # Installation
 
 ```bash
