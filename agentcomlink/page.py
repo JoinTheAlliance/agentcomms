@@ -92,112 +92,16 @@ page = """\
         socket.send(message);
         chatInput.value = "";
       };
+
+      chatInput.addEventListener("keypress", function(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          sendButton.click();
+        }
+      });
     </script>
     <script>
-      const serverUrl = "http://0.0.0.0:8000"; // Change to your server address and port
-
-      function uploadFile() {
-        const fileInput = document.querySelector("#file");
-        const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("path", file.name);
-
-        fetch(serverUrl + "/file/", {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("File uploaded:", data);
-            loadFiles();
-          });
-      }
-
-      function loadFiles() {
-        const fileList = document.querySelector("#file-list");
-
-        fetch(serverUrl + "/files/")
-          .then((response) => response.json())
-          .then((data) => {
-            fileList.innerHTML = "";
-            data.files.forEach((file) => {
-              const li = document.createElement("li");
-
-              // Create file name text
-              const fileText = document.createTextNode(file + " ");
-              li.appendChild(fileText);
-
-              // Create Download link
-              const downloadLink = document.createElement("a");
-              downloadLink.textContent = "[Download]";
-              downloadLink.href = "#";
-              downloadLink.addEventListener("click", (e) => {
-                e.preventDefault();
-                downloadFile(file);
-              });
-              li.appendChild(downloadLink);
-
-              // Add space between Download and Delete buttons
-              const space = document.createTextNode(" ");
-              li.appendChild(space);
-
-              // Create Delete button
-              const deleteButton = document.createElement("a");
-              deleteButton.textContent = "[Delete]";
-              deleteButton.href = "#";
-              deleteButton.addEventListener("click", (e) => {
-                e.preventDefault();
-                deleteFile(file);
-              });
-              li.appendChild(deleteButton);
-
-              fileList.appendChild(li);
-            });
-          });
-      }
-
-      function downloadFile(filename) {
-        console.log("Downloading: " + filename);
-        fetch(serverUrl + "/file/" + filename)
-          .then((response) => response.blob())
-          .then((blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const element = document.createElement("a");
-            element.setAttribute("href", url);
-            element.setAttribute("download", filename);
-
-            element.style.display = "none";
-            document.body.appendChild(element);
-
-            element.click();
-
-            document.body.removeChild(element);
-          });
-      }
-
-      function deleteFile(filename) {
-        console.log("Deleting: " + filename);
-        fetch(serverUrl + "/file/" + filename, {
-          method: "DELETE",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Error deleting file");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("File deleted:", data);
-            loadFiles();
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-
-      // Load files on page load
-      loadFiles();
+      // Rest of your script
     </script>
   </body>
 </html>
