@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from agentcomlink.constants import app, storage_path
 from agentcomlink.files import check_files, get_storage_path, set_storage_path
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 
@@ -51,6 +52,14 @@ def start_server(storage_path=None, port=8000):
         set_storage_path(storage_path)
     check_files()
     app.include_router(router)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     app.mount(
         "/files", StaticFiles(directory=get_storage_path(), html=False), name="files"
     )
