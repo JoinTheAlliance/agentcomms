@@ -49,9 +49,9 @@ def list_files_formatted(path="."):
     files_formatted = []
     for file in files:
         if os.path.isdir(os.path.join(storage_path, path, file)):
-            files_formatted.append(file + "/")
+            files_formatted.append(os.path.join(storage_path, file + "/"))
         else:
-            files_formatted.append(file)
+            files_formatted.append(os.path.join(storage_path, file))
     return "User's Files:\n" + "\n".join(files_formatted)
 
 def get_file(path):

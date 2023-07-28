@@ -59,6 +59,8 @@ def test_list_files():
 def test_list_files_formatted():
     setup_module()
     add_file("test.txt", "Hello, world!")
+    print('list_files_formatted')
+    print(list_files_formatted())
     assert "test.txt" in list_files_formatted()
     teardown_module()
 
