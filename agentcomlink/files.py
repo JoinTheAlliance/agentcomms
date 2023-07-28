@@ -52,7 +52,7 @@ def list_files_formatted(path="."):
             files_formatted.append(file + "/")
         else:
             files_formatted.append(file)
-    return "User's Files:\n" + files_formatted
+    return "User's Files:\n" + "\n".join(files_formatted)
 
 def get_file(path):
     check_files()
