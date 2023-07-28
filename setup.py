@@ -13,7 +13,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='agentcomlink',
-    version='0.1.0',
+    version='0.1.1',
     description='Simple chat, debug and file management panel for agents',
     long_description=long_description,  # added this line
     long_description_content_type="text/markdown",  # and this line
