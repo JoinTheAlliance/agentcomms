@@ -7,6 +7,8 @@ def check_files():
     if not os.path.exists(storage_path):
         os.makedirs(storage_path, exist_ok=True)
 
+def get_storage_path():
+    return storage_path
 
 def set_storage_path(new_path):
     global storage_path

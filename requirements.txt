@@ -1,3 +1,4 @@
 fastapi
 pydantic
 httpx
+python-multipart

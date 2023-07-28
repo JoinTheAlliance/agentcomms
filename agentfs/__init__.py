@@ -1,4 +1,5 @@
 from .files import (
+    get_storage_path,
     set_storage_path,
     add_file,
     remove_file,
@@ -9,6 +10,7 @@ from .files import (
 from .server import start_server, get_server, set_storage_path
 
 __all__ = [
+    "get_storage_path",
     "start_server",
     "get_server",
     "set_storage_path",

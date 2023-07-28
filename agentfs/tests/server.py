@@ -5,8 +5,11 @@ client = TestClient(start_server())
 
 
 def test_http_add_file():
+    file_contents = "Hello, world!"
     response = client.post(
-        "/file/", json={"path": "test.txt", "content": "Hello, world!"}
+        "/file/",
+        data={"path": "test.txt"},
+        files={"file": ("test.txt", file_contents, "text/plain")},
     )
     print("Response:", response.json())
     assert response.status_code == 200
@@ -16,11 +19,16 @@ def test_http_add_file():
 def test_http_get_file():
     response = client.get("/file/test.txt")
     assert response.status_code == 200
-    assert response.json() == {"content": "Hello, world!"}
+    assert response.content.decode() == "Hello, world!"
 
 
 def test_http_update_file():
-    response = client.put("/file/", json={"path": "test.txt", "content": " Updated"})
+    file_contents = " Updated"
+    response = client.put(
+        "/file/",
+        data={"path": "test.txt"},
+        files={"file": ("test.txt", file_contents, "text/plain")},
+    )
     assert response.status_code == 200
     assert response.json() == {"message": "File updated"}
 

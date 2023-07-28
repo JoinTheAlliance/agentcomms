@@ -1,5 +1,5 @@
 import os
-from agentfs import get_server
+from agentfs import get_server, get_storage_path
 
 if __name__ == "__main__":
     import uvicorn
@@ -7,4 +7,3 @@ if __name__ == "__main__":
 
     from fastapi.staticfiles import StaticFiles
     app = get_server()
-    app.mount("/", StaticFiles(directory="static"), name="static")
