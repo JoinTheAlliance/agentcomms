@@ -1,3 +1,4 @@
+page = """\
 <!DOCTYPE html>
 <html>
   <style>
@@ -200,3 +201,4 @@
     </script>
   </body>
 </html>
+"""

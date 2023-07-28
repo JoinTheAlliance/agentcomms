@@ -8,7 +8,9 @@ from agentcomlink.constants import app, storage_path
 from agentcomlink.files import check_files, get_storage_path, set_storage_path
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
+
+from agentcomlink.page import page
 
 router = APIRouter()
 app = FastAPI()
@@ -22,6 +24,9 @@ def get_server():
     global app
     return app
 
+# get the path of the folder that is parent to this one
+def get_parent_path():
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def start_server(storage_path=None, port=8000):
     global app
@@ -29,9 +34,6 @@ def start_server(storage_path=None, port=8000):
         set_storage_path(storage_path)
     check_files()
     app.include_router(router)
-    app.mount(
-        "/", StaticFiles(directory="static", html=True), name="static"
-    )  # enable HTML support
     app.mount(
         "/files", StaticFiles(directory=get_storage_path(), html=False), name="files"
     )
@@ -52,7 +54,7 @@ handlers = []
 
 @app.get("/")
 async def get():
-    return FileResponse("static/index.html")
+    return HTMLResponse(page)
 
 
 async def send_message(message):
