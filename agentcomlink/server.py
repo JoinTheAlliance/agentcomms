@@ -1,5 +1,5 @@
 import os
-
+import asyncio
 from fastapi import APIRouter, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -11,9 +11,16 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 
 from agentcomlink.page import page
+from concurrent.futures import ThreadPoolExecutor
+
+executor = ThreadPoolExecutor(max_workers=1)
 
 router = APIRouter()
 app = FastAPI()
+
+ws: WebSocket
+
+handlers = []
 
 
 class FilePath(BaseModel):
@@ -24,9 +31,11 @@ def get_server():
     global app
     return app
 
+
 # get the path of the folder that is parent to this one
 def get_parent_path():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 def start_server(storage_path=None, port=8000):
     global app
@@ -47,18 +56,17 @@ def stop_server():
     app = None
 
 
-ws: WebSocket
-
-handlers = []
-
-
 @app.get("/")
 async def get():
     return HTMLResponse(page)
 
 
-async def send_message(message):
-    await ws.send_text(message)
+def send_message(message):
+    global ws
+    if ws is not None:
+        print("send text")
+        loop = asyncio.get_event_loop()  # gets current event loop
+        asyncio.run_coroutine_threadsafe(ws.send_text(message), loop)
 
 
 def register_message_handler(handler):
@@ -79,10 +87,14 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
+            print("data received")
             for handler in handlers:
+                print("sending data to handler")
+                print(data)
                 handler(data)
     except WebSocketDisconnect:
         ws = None
+        print("socket disconnected")
 
 
 @router.post("/file/")
