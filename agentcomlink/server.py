@@ -4,8 +4,8 @@ from fastapi import APIRouter, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from agentfs.constants import app, storage_path
-from agentfs.files import check_files, get_storage_path, set_storage_path
+from agentcomlink.constants import app, storage_path
+from agentcomlink.files import check_files, get_storage_path, set_storage_path
 
 router = APIRouter()
 

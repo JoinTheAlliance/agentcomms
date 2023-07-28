@@ -12,16 +12,16 @@ with open("README.md", "r") as fh:
     
 
 setup(
-    name='agentfs',
+    name='agentcomlink',
     version='0.1.0',
-    description='Simple file management and serving for agents',
+    description='Simple chat, debug and file management panel for agents',
     long_description=long_description,  # added this line
     long_description_content_type="text/markdown",  # and this line
-    url='https://github.com/AutonomousResearchGroup/agentfs',
+    url='https://github.com/AutonomousResearchGroup/agentcomlink',
     author='Moon',
     author_email='shawmakesmagic@gmail.com',
     license='MIT',
-    packages=['agentfs'],
+    packages=['agentcomlink'],
     install_requires=['chromadb', 'rich'],
     readme = "README.md",
     classifiers=[

@@ -1,1 +1,1 @@
-from agentfs.tests import *
+from agentcomlink.tests import *

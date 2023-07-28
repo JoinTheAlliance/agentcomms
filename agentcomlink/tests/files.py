@@ -1,6 +1,6 @@
 import os
 
-from agentfs.files import (
+from agentcomlink.files import (
     add_file,
     get_file,
     list_files,

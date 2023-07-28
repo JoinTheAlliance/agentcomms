@@ -1,6 +1,6 @@
 import os
 
-from agentfs.constants import storage_path
+from agentcomlink.constants import storage_path
 
 
 def check_files():
