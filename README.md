@@ -13,7 +13,8 @@ pip install agentcomlink
 ## Quickstart
 
 1. **Start the server**:
-You can start the server with uvicorn like this:
+   You can start the server with uvicorn like this:
+
 ```python
 import os
 
@@ -21,6 +22,7 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run("agentcomlink:start_server", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
 ```
+
 This will start the server at `http://localhost:8000`.
 
 2. **Get a file**:
@@ -182,6 +184,26 @@ Lists all files in the specified directory.
 **Returns**:
 
 - A list of file names in the specified directory.
+
+**Example**:
+
+```python
+from agentcomlink import list_files
+
+files = list_files()
+```
+
+### `list_files_formatted(path='.')`
+
+Lists all files in the specified directory as a formatted string. Convenient!
+
+**Arguments**:
+
+- `path` (str, optional): The path to the directory. Defaults to `'.'` (current directory).
+
+**Returns**:
+
+- A string containing a list of file names in the specified directory.
 
 **Example**:
 

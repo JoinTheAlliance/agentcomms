@@ -4,6 +4,7 @@ from agentcomlink.files import (
     add_file,
     get_file,
     list_files,
+    list_files_formatted,
     remove_file,
     set_storage_path,
     update_file,
@@ -52,6 +53,13 @@ def test_list_files():
     setup_module()
     add_file("test.txt", "Hello, world!")
     assert "test.txt" in list_files()
+    teardown_module()
+
+
+def test_list_files_formatted():
+    setup_module()
+    add_file("test.txt", "Hello, world!")
+    assert "test.txt" in list_files_formatted()
     teardown_module()
 
 

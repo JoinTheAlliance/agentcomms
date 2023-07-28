@@ -43,6 +43,16 @@ def list_files(path="."):
     check_files()
     return os.listdir(os.path.join(storage_path, path))  # Returns the list of files
 
+def list_files_formatted(path="."):
+    check_files()
+    files = os.listdir(os.path.join(storage_path, path))
+    files_formatted = []
+    for file in files:
+        if os.path.isdir(os.path.join(storage_path, path, file)):
+            files_formatted.append(file + "/")
+        else:
+            files_formatted.append(file)
+    return "User's Files:\n" + files_formatted
 
 def get_file(path):
     check_files()
