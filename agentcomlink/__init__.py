@@ -13,6 +13,7 @@ from .server import (
     get_server,
     set_storage_path,
     send_message,
+    async_send_message,
     register_message_handler,
     unregister_message_handler,
 )
@@ -21,6 +22,7 @@ __all__ = [
     "get_storage_path",
     "start_server",
     "send_message",
+    "async_send_message",
     "register_message_handler",
     "unregister_message_handler",
     "get_server",

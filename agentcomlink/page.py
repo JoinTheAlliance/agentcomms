@@ -27,6 +27,21 @@ page = """\
       border: 1px solid #ccc;
       padding: 5px;
     }
+    #feed-container {
+      width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    }
+    #feed {
+      height: 500px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
     #chat-input {
       width: 70%;
       height: 30px;
@@ -66,14 +81,26 @@ page = """\
         <ul id="file-list"></ul>
       </div>
     </div>
+    <div id="feed-container">
+      <div id="feed"></div>
+      </div>
+    </div>
     <script type="module">
       let socket = new WebSocket("ws://0.0.0.0:8000/ws");
       socket.onmessage = function (event) {
         let message = event.data;
-        let messageContainer = document.getElementById("messages");
-        let newMessage = document.createElement("div");
-        newMessage.textContent = message;
-        messageContainer.appendChild(newMessage);
+        message = JSON.parse(message);
+        if (message.type === "chat") {
+          let messageContainer = document.getElementById("messages");
+          let newMessage = document.createElement("div");
+          newMessage.textContent = message;
+          messageContainer.appendChild(newMessage);
+        } else if (message.type === "feed") {
+        let feedContainer = document.getElementById("feed");
+          let newMessage = document.createElement("div");
+          newMessage.textContent = message;
+          feedContainer.appendChild(newMessage);
+        };
       };
 
       socket.onerror = function (error) {
@@ -89,7 +116,7 @@ page = """\
         let messageContainer = document.getElementById("messages");
         newMessage.textContent = message;
         messageContainer.appendChild(newMessage);
-        socket.send(message);
+        socket.send(JSON.stringify({ type: "chat", message }));
         chatInput.value = "";
       };
 

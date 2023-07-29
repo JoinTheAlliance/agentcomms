@@ -1,3 +1,4 @@
+import json
 import os
 import asyncio
 from fastapi import APIRouter, FastAPI, File, Form, HTTPException, UploadFile
@@ -19,9 +20,10 @@ executor = ThreadPoolExecutor(max_workers=1)
 router = APIRouter()
 app = FastAPI()
 
-ws: WebSocket
+ws: WebSocket = None
 
 handlers = []
+loop = None
 
 
 class FilePath(BaseModel):
@@ -47,6 +49,9 @@ def start_server(storage_path=None, port=8000):
     :param port: The port on which to start the server.
     :return: The FastAPI application.
     """
+    # start an event loop
+    global loop
+    loop = asyncio.new_event_loop()
     global app
     if storage_path:
         set_storage_path(storage_path)
@@ -65,6 +70,7 @@ def start_server(storage_path=None, port=8000):
     )
     if port:
         os.environ["PORT"] = str(port)
+
     return app
 
 
@@ -80,18 +86,34 @@ async def get():
     return HTMLResponse(page)
 
 
-def send_message(message):
+def send_message(message, type="chat"):
     """
     Send a message to the websocket.
 
     :param message: The message to send.
     """
     global ws
-    if ws is not None:
+    global loop
+    if ws is not None and loop is not None:
         print("send text")
-        loop = asyncio.get_event_loop()  # gets current event loop
-        asyncio.run_coroutine_threadsafe(ws.send_text(message), loop)
+        message = json.dumps({"type": type, "message": message})
+        print(message)
+        asyncio.run(ws.send_text(message))
 
+
+async def async_send_message(message, type="chat"):
+    """
+    Send a message to the websocket.
+
+    :param message: The message to send.
+    """
+    global ws
+    global loop
+    if ws is not None and loop is not None:
+        print("send text")
+        message = json.dumps({"type": type, "message": message})
+        print(message)
+        await ws.send_text(message)
 
 def register_message_handler(handler):
     """
@@ -126,14 +148,13 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
-            print("data received")
+            # data is a string, convert to json
+            data = json.loads(data)
+            print(data)
             for handler in handlers:
-                print("sending data to handler")
-                print(data)
-                handler(data)
+                await handler(data)
     except WebSocketDisconnect:
         ws = None
-        print("socket disconnected")
 
 
 @router.post("/file/")
@@ -207,3 +228,12 @@ def http_get_file(path: str):
         return FileResponse(os.path.join(storage_path, path))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+if __name__ == "__main__":
+    async def test_send(input):
+        print(input)
+        await async_send_message("test")
+
+    register_message_handler(test_send)
+    import uvicorn
+    uvicorn.run("agentcomlink:start_server", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
