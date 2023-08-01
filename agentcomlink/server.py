@@ -99,7 +99,7 @@ def send_message(message, type="chat", source="default"):
         asyncio.run(ws.send_text(message))
 
 
-async def async_send_message(message, type="chat"):
+async def async_send_message(message, type="chat", source="default"):
     """
     Send a message to the websocket.
 
@@ -109,7 +109,7 @@ async def async_send_message(message, type="chat"):
     global loop
     if ws is not None and loop is not None:
         print("send text")
-        message = json.dumps({"type": type, "message": message})
+        message = json.dumps({"type": type, "message": message, "source": source})
         print(message)
         await ws.send_text(message)
 
