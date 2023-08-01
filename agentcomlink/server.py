@@ -108,9 +108,7 @@ async def async_send_message(message, type="chat", source="default"):
     global ws
     global loop
     if ws is not None and loop is not None:
-        print("send text")
         message = json.dumps({"type": type, "message": message, "source": source})
-        print(message)
         await ws.send_text(message)
 
 def register_message_handler(handler):
@@ -148,7 +146,6 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             # data is a string, convert to json
             data = json.loads(data)
-            print(data)
             for handler in handlers:
                 await handler(data)
     except WebSocketDisconnect:
@@ -226,12 +223,3 @@ def http_get_file(path: str):
         return FileResponse(os.path.join(storage_path, path))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-if __name__ == "__main__":
-    async def test_send(input):
-        print(input)
-        await async_send_message("test")
-
-    register_message_handler(test_send)
-    import uvicorn
-    uvicorn.run("agentcomlink:start_server", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))

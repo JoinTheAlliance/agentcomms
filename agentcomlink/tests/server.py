@@ -11,7 +11,6 @@ def test_http_add_file():
         data={"path": "test.txt"},
         files={"file": ("test.txt", file_contents, "text/plain")},
     )
-    print("Response:", response.json())
     assert response.status_code == 200
     assert response.json() == {"message": "File created"}
 
@@ -35,7 +34,6 @@ def test_http_update_file():
 
 def test_http_list_files():
     test_http_add_file()
-    print("Files:", client.get("/files/").json())
     response = client.get("/files/")
     assert response.status_code == 200
     assert "test.txt" in response.json()["files"]
