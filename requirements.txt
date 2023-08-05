@@ -1,4 +1,8 @@
 fastapi
 pydantic
-httpx
 python-multipart
+python-dotenv
+httpx
+py-cord[voice]
+twitter-api-client
+elevenlabs

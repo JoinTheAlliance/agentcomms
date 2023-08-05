@@ -11,17 +11,17 @@ with open("README.md", "r") as fh:
     
 
 setup(
-    name='agentcomlink',
-    version='0.1.11',
-    description='Simple chat, debug and file management panel for agents',
+    name='agentconnectors',
+    version='0.1.0',
+    description='Social media connectors for agents',
     long_description=long_description,  # added this line
     long_description_content_type="text/markdown",  # and this line
-    url='https://github.com/AutonomousResearchGroup/agentcomlink',
+    url='https://github.com/AutonomousResearchGroup/agentconnectors',
     author='Moon',
     author_email='shawmakesmagic@gmail.com',
     license='MIT',
-    packages=['agentcomlink'],
-    install_requires=['chromadb', 'rich'],
+    packages=['agentconnectors'],
+    install_requires=['python-dotenv', 'httpx', 'py-cord[voice]', 'twitter-api-client'],
     readme = "README.md",
     classifiers=[
         'Development Status :: 4 - Beta',
