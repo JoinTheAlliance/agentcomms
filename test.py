@@ -1,3 +1,3 @@
-from agentconnectors.discord.tests import *
-from agentconnectors.twitter.tests import *
-from agentconnectors.adminpanel.tests import *
+from agentcomms.discord.tests import *
+from agentcomms.twitter.tests import *
+from agentcomms.adminpanel.tests import *

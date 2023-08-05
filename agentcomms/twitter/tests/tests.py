@@ -1,6 +1,6 @@
 import asyncio
 import os
-from agentconnectors.twitter import (
+from agentcomms.twitter import (
     start_twitter,
     like_tweet,
     reply_to_tweet,

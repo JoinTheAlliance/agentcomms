@@ -11,16 +11,16 @@ with open("README.md", "r") as fh:
     
 
 setup(
-    name='agentconnectors',
+    name='agentcomms',
     version='0.1.0',
     description='Social media connectors for agents',
     long_description=long_description,  # added this line
     long_description_content_type="text/markdown",  # and this line
-    url='https://github.com/AutonomousResearchGroup/agentconnectors',
+    url='https://github.com/AutonomousResearchGroup/agentcomms',
     author='Moon',
     author_email='shawmakesmagic@gmail.com',
     license='MIT',
-    packages=['agentconnectors'],
+    packages=['agentcomms'],
     install_requires=['python-dotenv', 'httpx', 'py-cord[voice]', 'twitter-api-client'],
     readme = "README.md",
     classifiers=[

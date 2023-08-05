@@ -5,14 +5,14 @@ from fastapi import APIRouter, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from agentconnectors.adminpanel.constants import app, storage_path
-from agentconnectors.adminpanel.files import check_files, get_storage_path, set_storage_path
+from agentcomms.adminpanel.constants import app, storage_path
+from agentcomms.adminpanel.files import check_files, get_storage_path, set_storage_path
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 
-from agentconnectors.adminpanel.page import page
+from agentcomms.adminpanel.page import page
 from concurrent.futures import ThreadPoolExecutor
 
 executor = ThreadPoolExecutor(max_workers=1)

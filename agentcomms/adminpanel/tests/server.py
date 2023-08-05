@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from agentconnectors.adminpanel.server import start_server
+from agentcomms.adminpanel.server import start_server
 
 client = TestClient(start_server())
 

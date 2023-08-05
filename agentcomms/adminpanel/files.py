@@ -1,6 +1,6 @@
 import os
 
-from agentconnectors.adminpanel.constants import storage_path
+from agentcomms.adminpanel.constants import storage_path
 
 
 def check_files():

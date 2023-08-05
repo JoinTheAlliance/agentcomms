@@ -1,10 +1,10 @@
 import os
 import time
-from agentconnectors.discord import start_discord_connector, generate_tts, message_queue
+from agentcomms.discord import start_discord_connector, generate_tts, message_queue
 from dotenv import load_dotenv
 from elevenlabs import set_api_key
 
-from agentconnectors.discord.connector import send_message
+from agentcomms.discord.connector import send_message
 
 load_dotenv()
 voice = os.getenv("ELEVENLABS_VOICE")
