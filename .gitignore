@@ -167,3 +167,4 @@ test
 files/
 .env
 twitter.cookies
+temp/
