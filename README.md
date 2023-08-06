@@ -1,16 +1,16 @@
-# agentcomlink <a href="https://discord.gg/qetWd7J9De"><img style="float: right" src="https://dcbadge.vercel.app/api/server/qetWd7J9De" alt=""></a>
+# agentcomms <a href="https://discord.gg/qetWd7J9De"><img style="float: right" src="https://dcbadge.vercel.app/api/server/qetWd7J9De" alt=""></a>
 
 Simple file management and serving for agents
 
 <img src="resources/image.jpg">
 
-[![Lint and Test](https://github.com/AutonomousResearchGroup/agentcomlink/actions/workflows/test.yml/badge.svg)](https://github.com/AutonomousResearchGroup/agentcomlink/actions/workflows/test.yml)
-[![PyPI version](https://badge.fury.io/py/agentcomlink.svg)](https://badge.fury.io/py/agentcomlink)
+[![Lint and Test](https://github.com/AutonomousResearchGroup/agentcomms/actions/workflows/test.yml/badge.svg)](https://github.com/AutonomousResearchGroup/agentcomms/actions/workflows/test.yml)
+[![PyPI version](https://badge.fury.io/py/agentcomms.svg)](https://badge.fury.io/py/agentcomms)
 
 # Installation
 
 ```bash
-pip install agentcomlink
+pip install agentcomms
 ```
 
 ## Quickstart
@@ -23,7 +23,7 @@ import os
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("agentcomlink:start_server", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
+    uvicorn.run("agentcomms:start_server", host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
 ```
 
 This will start the server at `http://localhost:8000`.
@@ -32,7 +32,7 @@ This will start the server at `http://localhost:8000`.
    Once the server is up and running, you can retrieve file content by sending a GET request to `/file/{path}` endpoint, where `{path}` is the path to the file relative to the server's current storage directory.
 
 ```python
-from agentcomlink import get_file
+from agentcomms import get_file
 
 # Fetches the content of the file located at "./files/test.txt"
 file_content = get_file("test.txt")
@@ -43,7 +43,7 @@ print(file_content)
    Similarly, you can save content to a file by sending a POST request to `/file/` endpoint, with JSON data containing the `path` and `content` parameters.
 
 ```python
-from agentcomlink import add_file
+from agentcomms import add_file
 
 # Creates a file named "test.txt" in the current storage directory
 # and writes "Hello, world!" to it.
@@ -69,7 +69,7 @@ Starts the FastAPI server. If a `storage_path` is provided, it sets the storage 
 **Example**:
 
 ```python
-from agentcomlink import start_server
+from agentcomms import start_server
 
 start_server("/my/storage/directory")
 ```
@@ -89,7 +89,7 @@ Returns the FastAPI application instance.
 **Example**:
 
 ```python
-from agentcomlink import get_server
+from agentcomms import get_server
 
 app = get_server()
 ```
@@ -109,7 +109,7 @@ Sets the storage directory to the provided path.
 **Example**:
 
 ```python
-from agentcomlink import set_storage_path
+from agentcomms import set_storage_path
 
 set_storage_path("/my/storage/directory")
 ```
@@ -130,7 +130,7 @@ Creates a file at the specified path and writes the provided content to it.
 **Example**:
 
 ```python
-from agentcomlink import add_file
+from agentcomms import add_file
 
 add_file("test.txt", "Hello, world!")
 ```
@@ -150,7 +150,7 @@ Removes the file at the specified path.
 **Example**:
 
 ```python
-from agentcomlink import remove_file
+from agentcomms import remove_file
 
 remove_file("test.txt")
 ```
@@ -171,7 +171,7 @@ Appends the provided content to the file at the specified path.
 **Example**:
 
 ```python
-from agentcomlink import update_file
+from agentcomms import update_file
 
 update_file("test.txt", "New content")
 ```
@@ -191,7 +191,7 @@ Lists all files in the specified directory.
 **Example**:
 
 ```python
-from agentcomlink import list_files
+from agentcomms import list_files
 
 files = list_files()
 ```
@@ -211,7 +211,7 @@ Lists all files in the specified directory as a formatted string. Convenient!
 **Example**:
 
 ```python
-from agentcomlink import list_files
+from agentcomms import list_files
 
 files = list_files()
 ```
@@ -231,7 +231,7 @@ Returns the content of the file at the specified path.
 **Example**:
 
 ```python
-from agentcomlink import get_file
+from agentcomms import get_file
 
 content = get_file("test.txt")
 ```

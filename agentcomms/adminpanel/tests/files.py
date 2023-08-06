@@ -1,6 +1,6 @@
 import os
 
-from agentcomlink.files import (
+from agentcomms.adminpanel.files import (
     add_file,
     get_file,
     list_files,
