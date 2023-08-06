@@ -2,6 +2,16 @@ name: Lint and Test
 
 on: [push]
 
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  TWITTER_EMAIL: ${{ secrets.TWITTER_EMAIL }}
+  TWITTER_USERNAME: ${{ secrets.TWITTER_USERNAME }}
+  TWITTER_PASSWORD: ${{ secrets.TWITTER_PASSWORD }}
+  DISCORD_API_TOKEN: ${{ secrets.DISCORD_API_TOKEN }}
+  ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+  ELEVENLABS_VOICE: ${{ secrets.ELEVENLABS_VOICE }}
+  ELEVENLABS_MODEL: ${{ secrets.ELEVENLABS_MODEL }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
