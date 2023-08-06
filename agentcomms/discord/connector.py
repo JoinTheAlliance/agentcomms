@@ -18,11 +18,12 @@ temp_path = "./temp/output.mp3"
 
 intents = discord.Intents().all()
 intents.message_content = True
-bot = discord.Client(intents=intents)
+bot = None
 vc = None
 
 
 async def send_queued_messages():
+    print("Starting message queue")
     while True:
         print("Waiting for message")
         message, channel_id = await message_queue.get()
@@ -56,21 +57,35 @@ def send_message(message, channel_id):
     print("Message sent")
 
 
+
+intents = discord.Intents().all()
+intents.message_content = True
+bot = discord.Client(intents=intents)
+
+
+from threading import Thread
+from concurrent.futures import Future
+
 def start_connector(discord_api_token=None):
+    global bot
     print("Starting Discord connector")
     if discord_api_token is None:
         discord_api_token = os.getenv("DISCORD_API_TOKEN")
     print("Discord connector started")
 
-    async def run_bot():
-        await bot.start(discord_api_token)
+    def bot_thread():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
-    loop = asyncio.get_event_loop()
-    loop.create_task(run_bot())
-    loop.create_task(send_queued_messages())
-    loop.run_forever()
+        async def main():
+            await bot.start(discord_api_token)
 
+        loop.run_until_complete(asyncio.gather(main(), send_queued_messages()))
 
+    # Create a new thread that will run the bot
+    t = Thread(target=bot_thread, daemon=True)
+    t.start()
+    return t
 
 def generate_tts(message):
     set_api_key(os.getenv("ELEVENLABS_API_KEY"))
@@ -94,12 +109,10 @@ def register_feed_handler(func):
     handlers.append(func)
 
 
-@bot.event
 async def on_ready():
     print(f"{bot.user} has connected to Discord!")
 
 
-@bot.event
 async def on_message(message):
     global vc
     if message.author == bot.user:

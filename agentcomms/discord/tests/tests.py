@@ -28,13 +28,18 @@ def test_generate_tts():
     # Additional assertions could check the contents of the file or other properties
 
 
-def test_start_connector(capfd):
+def test_start_discord_connector(capfd):
     # Call start_connector function
-    start_discord_connector()
+    thread = start_discord_connector()
     time.sleep(2)
     send_message("Hello, world!", 1107883421759447040)
-
+    time.sleep(2)
     # Check the print output
     captured = capfd.readouterr()
     assert "Starting Discord connector" in captured.out
     assert "Discord connector started" in captured.out
+    print(captured.out)
+
+    # Stop the bot if you need to
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(bot.close())
