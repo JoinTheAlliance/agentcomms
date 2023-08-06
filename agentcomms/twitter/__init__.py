@@ -17,7 +17,5 @@ __all__ = [
     "like_tweet",
     "reply_to_tweet",
     "tweet",
-    "register_feed_handler",
-    "unregister_feed_handler",
     "get_account"
 ]

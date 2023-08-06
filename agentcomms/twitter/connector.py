@@ -59,22 +59,41 @@ account = None
 
 
 def get_account():
-    """Get the account object."""
+    """
+    Returns the global account object.
+    """
     return account
 
 
 def like_tweet(tweet_id):
-    """Like a tweet."""
+    """
+    Likes a tweet with the given tweet ID using the global account object.
+
+    Parameters:
+        tweet_id (str): The ID of the tweet to be liked.
+    """
     account.like(tweet_id)
 
 
 def reply_to_tweet(message, tweet_id):
-    """Reply to a tweet."""
+    """
+    Replies to a tweet with the given message and tweet ID using the global account object.
+
+    Parameters:
+        message (str): The message to be sent as a reply.
+        tweet_id (str): The ID of the tweet to reply to.
+    """
     account.reply(message, tweet_id)
 
 
 def tweet(message, media=None):
-    """Tweet a message."""
+    """
+    Posts a new tweet with the given message and optional media using the global account object.
+
+    Parameters:
+        message (str): The message to be tweeted.
+        media (str, optional): The media to be attached to the tweet. Defaults to None.
+    """
     if media:
         account.tweet(message, media)
     else:
@@ -82,41 +101,64 @@ def tweet(message, media=None):
 
 
 def register_feed_handler(handler):
-    """Register a handler to be called when a new message is received."""
+    """
+    Registers a new feed handler function. The handler function will be called whenever new feed messages are received.
+
+    Parameters:
+        handler (function): The function to be registered as a feed handler.
+    """
     feed_handlers.append(handler)
 
 
 def unregister_feed_handler(handler):
-    """Unregister a handler."""
+    """
+    Unregisters a feed handler function. The handler will no longer be called when new feed messages are received.
+
+    Parameters:
+        handler (function): The function to be unregistered.
+    """
     feed_handlers.remove(handler)
 
 
-async def dm_loop(account, session, scraper):
-    last_responded_notification = None
-    global params
-    cursor = None
+# async def dm_loop(account, session, scraper):
+#     """
+#     Main DM loop. This function checks for new DMs and passes them to all registered feed handlers.
 
-    while True:
-        inbox = account.dm_inbox()
-        print("****** INBOX ******")
-        print(inbox)
-        for handler in feed_handlers:
-            arguments = {
-                "inbox": inbox,
-                "account": account,
-                "session": session,
-            }
+#     Parameters:
+#         account (twitter.account.Account): The account object to be used for the DM operations.
+#         session (httpx.Client): The httpx session to be used for the DM operations.
+#         scraper (twitter.scraper.Scraper): The Scraper object to be used for the DM operations.
+#     """
+#     last_responded_notification = None
+#     global params
 
-            # if the handler is async, await it, otherwise call directly
-            if asyncio.iscoroutinefunction(handler):
-                await handler(arguments)
-            else:
-                handler(arguments)
+#     while True:
+#         inbox = account.dm_inbox()
+#         for handler in feed_handlers:
+#             arguments = {
+#                 "inbox": inbox,
+#                 "account": account,
+#                 "session": session,
+#             }
 
-        await asyncio.sleep(10 + random.randint(0, 2))
+#             # if the handler is async, await it, otherwise call directly
+#             if asyncio.iscoroutinefunction(handler):
+#                 await handler(arguments)
+#             else:
+#                 handler(arguments)
+
+#         await asyncio.sleep(10 + random.randint(0, 2))
 
 
 def feed_loop(account, session, scraper):
+    """
+    Main feed loop. This function checks for new tweets and passes them to all registered feed handlers.
+
+    Parameters:
+        account (twitter.account.Account): The account object to be used for the feed operations.
+        session (httpx.Client): The httpx session to be used for the feed operations.
+        scraper (twitter.scraper.Scraper): The Scraper object to be used for the feed operations.
+    """
     last_responded_notification = None
     global params
     global first
@@ -217,8 +259,20 @@ def start_twitter(
     session_storage_path="twitter.cookies",
     start_loop=True,
 ):
+    """
+    Starts the Twitter connector. Initializes the global account object and starts the feed loop in a new thread.
+
+    Parameters:
+        email (str, optional): The email address to be used for the Twitter account. If not provided, will be loaded from environment variables.
+        username (str, optional): The username to be used for the Twitter account. If not provided, will be loaded from environment variables.
+        password (str, optional): The password to be used for the Twitter account. If not provided, will be loaded from environment variables.
+        session_storage_path (str, optional): The path where session data should be stored. Defaults to "twitter.cookies".
+        start_loop (bool, optional): Whether the feed loop should be started immediately. Defaults to True.
+
+    Returns:
+        threading.Thread: The thread where the feed loop is running.
+    """
     global account
-    """Start the connector."""
     # get the environment variables
     if email is None:
         email = os.getenv("TWITTER_EMAIL")
@@ -253,4 +307,7 @@ def start_twitter(
 
 
 def start_connector():
+    """
+    Convenience function to start the Twitter connector. This function calls start_twitter with the default arguments.
+    """
     start_twitter()
