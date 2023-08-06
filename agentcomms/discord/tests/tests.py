@@ -1,6 +1,6 @@
 import os
 import time
-from agentcomms.discord import start_discord_connector, generate_tts, message_queue
+from agentcomms.discord import start_discord_connector
 from dotenv import load_dotenv
 from elevenlabs import set_api_key
 
