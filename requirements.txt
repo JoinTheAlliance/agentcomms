@@ -1,4 +1,5 @@
 fastapi
+openai
 pydantic
 python-multipart
 python-dotenv

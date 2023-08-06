@@ -1,5 +1,9 @@
 from setuptools import setup
 
+# read the contexts of requirements.txt into an array
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 long_description = ""
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -21,7 +25,7 @@ setup(
     author_email='shawmakesmagic@gmail.com',
     license='MIT',
     packages=['agentcomms'],
-    install_requires=['python-dotenv', 'httpx', 'py-cord[voice]', 'twitter-api-client'],
+    install_requires=required,
     readme = "README.md",
     classifiers=[
         'Development Status :: 4 - Beta',
