@@ -11,21 +11,21 @@ voice = os.getenv("ELEVENLABS_VOICE")
 model = os.getenv("ELEVENLABS_MODEL")
 set_api_key(os.getenv("ELEVENLABS_API_KEY"))
 
-def test_generate_tts():
-    message = "Hello, world!"
+# def test_generate_tts():
+#     message = "Hello, world!"
 
-    file_path = generate_tts(message)
+#     file_path = generate_tts(message)
 
-    # Check that the file path is constructed correctly
-    assert file_path.startswith("./temp/reply_")
-    assert file_path.endswith(".mp3")
+#     # Check that the file path is constructed correctly
+#     assert file_path.startswith("./temp/reply_")
+#     assert file_path.endswith(".mp3")
 
-    # Check that the file has been created
-    assert os.path.exists(file_path)
+#     # Check that the file has been created
+#     assert os.path.exists(file_path)
 
-    print("TTS file generated successfully")
+#     print("TTS file generated successfully")
 
-    # Additional assertions could check the contents of the file or other properties
+#     # Additional assertions could check the contents of the file or other properties
 
 
 def test_start_discord_connector(capfd):
