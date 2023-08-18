@@ -258,6 +258,7 @@ def start_twitter(
     password=None,
     session_storage_path="twitter.cookies",
     start_loop=True,
+    loop_dict=None,
 ):
     """
     Starts the Twitter connector. Initializes the global account object and starts the feed loop in a new thread.
@@ -306,8 +307,22 @@ def start_twitter(
         return thread
 
 
-def start_connector():
+def start_connector(
+    loop_dict=None, # dict of information for stopping the loop, etc
+    email=None,
+    username=None,
+    password=None,
+    session_storage_path="twitter.cookies",
+    start_loop=True,
+):
     """
     Convenience function to start the Twitter connector. This function calls start_twitter with the default arguments.
     """
-    start_twitter()
+    start_twitter(
+        email=None,
+        username=None,
+        password=None,
+        session_storage_path="twitter.cookies",
+        start_loop=True,
+        loop_dict=None,
+    )

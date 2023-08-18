@@ -65,7 +65,7 @@ def send_message(message, channel_id):
     print("Message sent")
 
 
-def start_connector(discord_api_token=None):
+def start_connector(loop_dict=None, discord_api_token=None):
     """
     Starts the Discord bot connector
 
