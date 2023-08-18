@@ -16,7 +16,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='agentcomms',
-    version='0.2.1',
+    version='0.2.2',
     description='Social media connectors for agents',
     long_description=long_description,  # added this line
     long_description_content_type="text/markdown",  # and this line
@@ -24,7 +24,7 @@ setup(
     author='Moon',
     author_email='shawmakesmagic@gmail.com',
     license='MIT',
-    packages=['agentcomms'],
+    packages=['agentcomms', 'agentcomms.discord', 'agentcomms.twitter', 'agentcomms.adminpanel'],
     install_requires=required,
     readme = "README.md",
     classifiers=[
