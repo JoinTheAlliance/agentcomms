@@ -1,10 +1,15 @@
 import asyncio
 import os
+import json
+import pdb
 from agentcomms.twitter import (
     start_twitter,
     like_tweet,
     reply_to_tweet,
     tweet,
+    search_tweets,
+    get_authors,
+    get_relevant_tweets_from_author_timeline,
     register_feed_handler,
     unregister_feed_handler,
 )
@@ -14,6 +19,7 @@ TWITTER_EMAIL = os.getenv("TWITTER_EMAIL")
 TWITTER_USERNAME = os.getenv("TWITTER_USERNAME")
 TWITTER_PASSWORD = os.getenv("TWITTER_PASSWORD")
 SESSION_STORAGE_PATH = "twitter.cookies"
+
 
 
 # Custom setup function
@@ -48,9 +54,54 @@ def test_tweet():
     tweet(message)
 
 
+def test_search_tweets(topic="Upstreet", limit=100, **kwargs):
+    setup_function()
+    res = search_tweets(topic, limit, retries=5, **kwargs)
+    return res
+
+
+def test_get_authors(tweets_data=None, **kwargs):
+    setup_function()
+    if tweets_data is None:
+        tweets_data = test_search_tweets()
+    pdb.set_trace()
+    authors = get_authors(tweets_data)
+    authors = dict(sorted(authors.items(), key=lambda x: x[1]['impact_factor'], reverse=True))
+    return authors
+
+
+def test_get_relevant_tweets_from_author_timeline(topic=None, author=None):
+    setup_function()
+    if topic is None and author is None:
+        topic = "Attention"
+        author = "GenZSiv"
+    documents = get_relevant_tweets_from_author_timeline(topic, author)
+    return documents
+
+
 def test_register_and_unregister_feed_handler():
     setup_function()
     handler = lambda x: print(x)
     register_feed_handler(handler)
     # Here you can add logic to verify the handler was registered, such as checking the feed_handlers list
     unregister_feed_handler(handler)
+    
+
+if __name__=='__main__':
+
+    topic = "Attention"
+    author = "GenZSiv"
+
+    tweets_data = test_search_tweets(topic , 5)
+    authors = test_get_authors(tweets_data)
+
+    with open(f'{topic}_data.json', 'w') as file:
+        json.dump(tweets_data, file, indent=4)
+
+    with open(f'{topic}_authors.json', 'w') as file:
+        json.dump(authors, file, indent=4)
+
+    documents = test_get_relevant_tweets_from_author_timeline(topic, author)
+
+    with open(f'documents_{author}_{topic}.json', 'w') as file:
+        json.dump(documents, file, indent=4)

@@ -1,4 +1,4 @@
-import discord
+import discord as discord_py
 import os
 import openai
 import time
@@ -15,9 +15,9 @@ message_queue = asyncio.Queue()
 temp_folder_tts = "./temp"
 temp_path = "./temp/output.mp3"
 
-intents = discord.Intents().all()
+intents = discord_py.Intents().all()
 intents.message_content = True
-bot = discord.Client(intents=intents)
+bot = discord_py.Client(intents=intents)
 vc = None
 
 
@@ -32,7 +32,7 @@ async def send_queued_messages():
         if channel is not None:
             # Send the message
             # determine if this is a voice channel
-            if channel.type == discord.ChannelType.voice:
+            if channel.type == discord_py.ChannelType.voice:
                 try:
                     sources = []
                     sentences = message.split("\n")
@@ -40,7 +40,7 @@ async def send_queued_messages():
                         tts_reply = generate_tts(str(sentence))
                         sources.append(tts_reply)
                     for source in sources:
-                        vc.play(discord.FFmpegPCMAudio(source))
+                        vc.play(discord_py.FFmpegPCMAudio(source))
                         while vc.is_playing():
                             await asyncio.sleep(0.10)
                 except:
@@ -164,9 +164,9 @@ async def on_message(message):
         print("Missing permissions to manage messages")
         return
 
-    if discord.utils.get(bot.voice_clients, guild=message.guild) != None:
+    if discord_py.utils.get(bot.voice_clients, guild=message.guild) != None:
         if (
-            discord.utils.get(bot.voice_clients, guild=message.guild).is_playing()
+            discord_py.utils.get(bot.voice_clients, guild=message.guild).is_playing()
             == True
         ):
             await message.delete()
@@ -186,7 +186,7 @@ async def on_message(message):
         if themember.id == int(speaker_id):
             voice = themember.voice
 
-    voice_client = discord.utils.get(bot.voice_clients, guild=voice.channel.guild)
+    voice_client = discord_py.utils.get(bot.voice_clients, guild=voice.channel.guild)
     if voice_client is None:
         vc = await voice.channel.connect()
     else:
@@ -197,7 +197,7 @@ async def on_message(message):
 
     # Assuming you have a start_recording method implemented in your voice client
     vc.start_recording(
-        discord.sinks.MP3Sink(),
+        discord_py.sinks.MP3Sink(),
         vgpt_after,
         voice.channel,
     )
@@ -228,13 +228,13 @@ async def on_message(message):
     return message
 
 
-async def vgpt_after(sink: discord.sinks, channel: discord.TextChannel, *args):
+async def vgpt_after(sink: discord_py.sinks, channel: discord_py.TextChannel, *args):
     """
     Post-processing function to be executed after receiving a message.
 
     Args:
-        sink (discord.sinks): Audio sink.
-        channel (discord.TextChannel): Channel where the message was received.
+        sink (discord_py.sinks): Audio sink.
+        channel (discord_py.TextChannel): Channel where the message was received.
         args: Additional arguments.
     """
     user_id = ""

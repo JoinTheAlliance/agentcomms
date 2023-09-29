@@ -4,6 +4,9 @@ from .connector import (
     like_tweet,
     reply_to_tweet,
     tweet,
+    search_tweets,
+    get_authors,
+    get_relevant_tweets_from_author_timeline,
     register_feed_handler,
     unregister_feed_handler,
     get_account
@@ -17,5 +20,7 @@ __all__ = [
     "like_tweet",
     "reply_to_tweet",
     "tweet",
-    "get_account"
+    "get_account",
+    "search_tweets",
+    "get_authors"
 ]
