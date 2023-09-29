@@ -1,10 +1,14 @@
 import asyncio
 import os
+import json
 from agentcomms.twitter import (
     start_twitter,
     like_tweet,
     reply_to_tweet,
     tweet,
+    search_tweets,
+    get_authors,
+    get_relevant_tweets_from_author_timeline,
     register_feed_handler,
     unregister_feed_handler,
 )
@@ -48,9 +52,50 @@ def test_tweet():
     tweet(message)
 
 
+def test_search_tweets(topic=None, limit=None, **kwargs):
+    setup_function()
+    if limit is None:
+        limit = 10
+    res = search_tweets(topic, limit, retries=5, **kwargs)
+    return res
+
+
+def test_get_authors(tweets_data, **kwargs):
+    setup_function()
+    authors = get_authors(tweets_data)
+    return authors
+
+
+def test_get_relevant_tweets_from_author_timeline(topic, author):
+    setup_function()
+    documents = get_relevant_tweets_from_author_timeline(topic, author)
+    return documents
+
+
 def test_register_and_unregister_feed_handler():
     setup_function()
     handler = lambda x: print(x)
     register_feed_handler(handler)
     # Here you can add logic to verify the handler was registered, such as checking the feed_handlers list
     unregister_feed_handler(handler)
+    
+
+if __name__=='__main__':
+    topic = "Attention"
+    tweets_data = test_search_tweets(f'{topic}', 5)
+    authors = test_get_authors(tweets_data)
+    authors = dict(sorted(authors.items(), key=lambda x: x[1]['impact_factor'], reverse=True))
+
+    with open(f'{topic}_data.json', 'w') as file:
+        json.dump(tweets_data, file, indent=4)
+
+    with open(f'{topic}_authors.json', 'w') as file:
+        json.dump(authors, file, indent=4)
+
+    author = "GenZSiv"
+    documents = test_get_relevant_tweets_from_author_timeline(topic, author)
+
+    with open(f'documents_{author}_authors.json', 'w') as file:
+        json.dump(documents, file, indent=4)
+    
+    
