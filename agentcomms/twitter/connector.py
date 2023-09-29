@@ -171,7 +171,6 @@ def search_tweets(topic, min_results=30, max_retries=5, **filters):
 
     results = fetch_data(query, min_results, max_retries)
     # concatenation hack
-    results = [entry for entries in results for entry in entries]
     return results
 
 
@@ -202,6 +201,7 @@ def get_authors(tweets_data, **filters):
 
     for tweet_data in tweets_data:
         # Extract relevant data points
+        pdb.set_trace()
         tweet_result = tweet_data.get('content', {}).get('itemContent', {}).get('tweet_results', {}).get('result', {})
         user_data_core = tweet_result.get('core', {}).get('user_results', {}).get('result', {})
         user_data = user_data_core.get('legacy', {})
@@ -314,15 +314,19 @@ def get_relevant_tweets_from_author_timeline(topic, author, min_results=30, max_
         
         if conversation_id in documents:
             continue
-
+        pdb.set_trace()
         quote_tweet_id = int(tweet_result.get('legacy', {}).get('quoted_status_id_str', 0))
         conversation_data = fetch_data(f"(conversation_id:{conversation_id})", min_results, max_retries)
-        
-        origin_tweet_data = [scraper.tweets_details([int(conversation_id)])[0]['data']['threaded_conversation_with_injections_v2']['instructions'][0]['entries'][0]]
-        # TODO handle case where origin_tweet has quote_tweet
-        # use origin_tweet_data to update quote_tweet_id from 0 to x.
-        quote_tweet_data = [scraper.tweets_details([quote_tweet_id])[0]['data']['threaded_conversation_with_injections_v2']['instructions'][0]['entries'][0]] if quote_tweet_id else []
-
+        try:
+            origin_tweet_data = [scraper.tweets_details([int(conversation_id)])[0]['data']['threaded_conversation_with_injections_v2']['instructions'][0]['entries'][0]]
+            # TODO handle case where origin_tweet has quote_tweet
+            # use origin_tweet_data to update quote_tweet_id from 0 to x.
+            quote_tweet_data = [scraper.tweets_details([quote_tweet_id])[0]['data']['threaded_conversation_with_injections_v2']['instructions'][0]['entries'][0]] if quote_tweet_id else []
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            print("Error: Error scraping for origin_tweet_data and quote_tweet_data")
+            origin_tweet_data = []
+            quote_tweet_data = []
         all_tweets_in_conversation = origin_tweet_data + quote_tweet_data + conversation_data
         documents[conversation_id] = ''.join([extract_document_from_tweet(data) for data in all_tweets_in_conversation])    
     
